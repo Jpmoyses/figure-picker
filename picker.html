@@ -4,6 +4,11 @@
 <meta name="viewport" content="initial-scale=1.0">
 <title>Picker</title>
 <style>
+
+html{
+    height: 100%;
+}
+
 body {
     background:#FFF;
     color:#000;
@@ -11,6 +16,14 @@ body {
     font-size:10pt;
     margin:0;
     padding:10px;
+}
+
+ul{
+    width: 350px;
+}
+
+ol{
+    width: 500px;
 }
 
 a:link, a:visited {
@@ -59,28 +72,6 @@ button.disabled:hover {
     overflow:hidden;
 }
 
-@media (min-width:1024px) {
-    /* Put the found favorites beside the picking div when the window is sufficiently large */
-    #picking {
-        float:left;
-        width:636px;
-    }
-
-    #secondary {
-        margin-left:646px;
-    }
-}
-
-@media (min-width:1300px) {
-    /* Once we get to the point where 636px is less than half of the width of the screen, make the picking div just take up half */
-    #picking {
-        width:50%;
-    }
-
-    #secondary {
-        margin-left:51%;
-    }
-}
 
 #pick {
     background:#58F;
@@ -118,12 +109,12 @@ button.disabled:hover {
     vertical-align:top;
     overflow:hidden;
     border-radius:100%;
-    background:#F7F7F7;
+    background:#224466;
     color:#000;
 }
 
 .item-list li img {
-    vertical-align:middle;
+    vertical-align:center;
     max-height:100%;
     max-width:100%;
 }
@@ -167,11 +158,11 @@ button.disabled:hover {
 }
 
 .item-list li:hover {
-    background:#CDF;
+    background:#c9d6e4;
 }
 
 .item-list.sorting li:hover {
-    background:#F7F7F7;
+    background:#335577;
 }
 
 #evaluating li.selected {
@@ -198,6 +189,8 @@ button.disabled:hover {
     font-size:10pt;
 }
 
+
+
 #buttons {
     margin-top:30px;
     position:relative;
@@ -206,6 +199,37 @@ button.disabled:hover {
 
 #darkmode-button{
     float: right;
+}
+
+#container{
+    height: 600px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 0px;
+    flex: 1 1 auto;
+}
+
+#overAll{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#picking{
+    width: auto;
+    transform: scale(1.1);
+}
+
+#secondary{
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    align-items: center;
 }
 
 body.dark-mode{
@@ -325,10 +349,10 @@ body.dark-mode{
 </head>
 <body class="dark-mode">
 <button onClick='toggleMode()' id='darkmode-button'>Light mode</button>
+<div id="overAll">
 <h1>Super Figure Picker!!!!</h1>
-
 <p>Wahoooooo!!!</p>
-
+</div>
 <div id="container">
 
 <div id="picking">
@@ -359,7 +383,7 @@ var items = [
     {id: 'Baron', name: 'Baron', image: "images/Icons/Baron Icon.png"},
     {id: 'Baroness', name: 'Baroness', image: "images/Icons/Baroness Icon.png"},
     {id: 'DarkAngelOlivia', name: 'Dark Angel Olivia', image: "images/Icons/Dark Angel Olivia Icon.png"},
-    {id: 'GSCHonokaIcon', name: 'GSC Honoka', image: "images/Icons/GSC Honoka Icon.png"},
+    {id: 'GSCHonoka', name: 'GSC Honoka', image: "images/Icons/GSC Honoka Icon.png"},
     {id: 'HarukaNanase', name: 'Haruka Nanase', image: "images/Icons/Haruka Nanase Icon.png"},
     {id: 'Lily', name: 'Lily', image: "images/Icons/Lily Icon.png"},
     {id: 'SaberAlter', name: 'Saber Alter', image: "images/Icons/SaberAlter Icon.png"}
@@ -367,7 +391,11 @@ var items = [
 
 var myPicker = new picker.Picker({
     items: items,
-    localStorageKey: 'picker-state'
+    localStorageKey: 'picker-state',
+    defaultSettings: {
+        minBatchSize: 9,
+        maxBatchSize: 9,
+    }
 });
 
 var pickerUI = new PickerUI(myPicker, {
