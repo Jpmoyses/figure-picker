@@ -323,8 +323,8 @@ body.dark-mode{
 
 </style>
 </head>
-<body>
-<button onClick='toggleMode()' id='darkmode-button'>Dark mode</button>
+<body class="dark-mode">
+<button onClick='toggleMode()' id='darkmode-button'>Light mode</button>
 <h1>Super Figure Picker!!!!</h1>
 
 <p>Wahoooooo!!!</p>
@@ -354,10 +354,20 @@ body.dark-mode{
 
 var items = [
     // Define your items here
+    {id: 'AlterKotori', name: 'Alter Kotori', image: "images/Icons/Alter Kotori Icon.png"},
+    {id: 'AzusaStrawberry', name: 'Azusa Strawberry', image: "images/Icons/Azusa Strawberry Icon.png"},
+    {id: 'Baron', name: 'Baron', image: "images/Icons/Baron Icon.png"},
+    {id: 'Baroness', name: 'Baroness', image: "images/Icons/Baroness Icon.png"},
+    {id: 'DarkAngelOlivia', name: 'Dark Angel Olivia', image: "images/Icons/Dark Angel Olivia Icon.png"},
+    {id: 'GSCHonokaIcon', name: 'GSC Honoka', image: "images/Icons/GSC Honoka Icon.png"},
+    {id: 'HarukaNanase', name: 'Haruka Nanase', image: "images/Icons/Haruka Nanase Icon.png"},
+    {id: 'Lily', name: 'Lily', image: "images/Icons/Lily Icon.png"},
+    {id: 'SaberAlter', name: 'Saber Alter', image: "images/Icons/SaberAlter Icon.png"}
 ];
 
 var myPicker = new picker.Picker({
-    items: items
+    items: items,
+    localStorageKey: 'picker-state'
 });
 
 var pickerUI = new PickerUI(myPicker, {
