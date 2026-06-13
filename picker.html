@@ -232,6 +232,23 @@ button.disabled:hover {
     align-items: center;
 }
 
+#big-image-popup {
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    border: 2px solid #224466;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    pointer-events: none; /* Prevents flickering if cursor touches it */
+}
+
+/* Optional: restrict the preview size if the source image is too large */
+#big-image-popup img {
+    width: 500px;
+    height: auto;
+    display: block;
+}
+
+
 body.dark-mode{
     background:#001122;
     color:#CDD;
@@ -348,102 +365,123 @@ body.dark-mode{
 </style>
 </head>
 <body class="dark-mode">
-<button onClick='toggleMode()' id='darkmode-button'>Light mode</button>
-<div id="overAll">
-<h1>Super Figure Picker!!!!</h1>
-<p>Wahoooooo!!!</p>
-</div>
-<div id="container">
+    <button onClick='toggleMode()' id='darkmode-button'>Light mode</button>
+    <div id="big-image-popup">
+        <img id="popup-img" src="" alt="Larger view">
+    </div>
+    <div id="overAll">
+        <h1>Super Figure Picker!!!!</h1>
+        <p>Wahoooooo!!!</p>
+    </div>
 
-<div id="picking">
-<ul id="evaluating" class="item-list">
-</ul>
+    <div id="container">
+        <div id="picking">
+            <ul id="evaluating" class="item-list">
+            </ul>
 
-<p id="buttons"><button id="pick">Pick</button> <button id="pass">Pass</button> <button id="undo">Undo</button> <button id="redo">Redo</button></p>
-</div>
+            <p id="buttons"><button id="pick">Pick</button> <button id="pass">Pass</button> <button id="undo">Undo</button> <button id="redo">Redo</button></p>
+        </div>
 
-<div id="secondary">
-<h2>Found favorites</h2>
+        <div id="secondary">
+            <h2>Found favorites</h2>
 
-<ol id="favorites" class="item-list">
-</ol>
-</div>
-</div>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="picker.js"></script>
-<script src="picker-ui.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.7.0/Sortable.min.js"></script>
-<script>
-'use strict';
+            <ol id="favorites" class="item-list">
+            </ol>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="picker.js"></script>
+    <script src="picker-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.7.0/Sortable.min.js"></script>
+    <script>
+    'use strict';
 
-var items = [
-    // Define your items here
-    {id: 'AlterKotori', name: 'Alter Kotori', image: "images/Icons/Alter Kotori Icon.png"},
-    {id: 'AzusaStrawberry', name: 'Azusa Strawberry', image: "images/Icons/Azusa Strawberry Icon.png"},
-    {id: 'Baron', name: 'Baron', image: "images/Icons/Baron Icon.png"},
-    {id: 'Baroness', name: 'Baroness', image: "images/Icons/Baroness Icon.png"},
-    {id: 'DarkAngelOlivia', name: 'Dark Angel Olivia', image: "images/Icons/Dark Angel Olivia Icon.png"},
-    {id: 'GSCHonoka', name: 'GSC Honoka', image: "images/Icons/GSC Honoka Icon.png"},
-    {id: 'HarukaNanase', name: 'Haruka Nanase', image: "images/Icons/Haruka Nanase Icon.png"},
-    {id: 'Lily', name: 'Lily', image: "images/Icons/Lily Icon.png"},
-    {id: 'SaberAlter', name: 'Saber Alter', image: "images/Icons/SaberAlter Icon.png"}
-];
+    var items = [
+        // Define your items here
+        {id: 'AlterKotori', name: 'Alter Kotori', image: "images/Icons/Alter Kotori Icon.png"},
+        {id: 'AzusaStrawberry', name: 'Azusa Strawberry', image: "images/Icons/Azusa Strawberry Icon.png"},
+        {id: 'Baron', name: 'Baron', image: "images/Icons/Baron Icon.png"},
+        {id: 'Baroness', name: 'Baroness', image: "images/Icons/Baroness Icon.png"},
+        {id: 'DarkAngelOlivia', name: 'Dark Angel Olivia', image: "images/Icons/Dark Angel Olivia Icon.png"},
+        {id: 'GSCHonoka', name: 'GSC Honoka', image: "images/Icons/GSC Honoka Icon.png"},
+        {id: 'HarukaNanase', name: 'Haruka Nanase', image: "images/Icons/Haruka Nanase Icon.png"},
+        {id: 'Lily', name: 'Lily', image: "images/Icons/Lily Icon.png"},
+        {id: 'SaberAlter', name: 'Saber Alter', image: "images/Icons/SaberAlter Icon.png"}
+    ];
 
-var myPicker = new picker.Picker({
-    items: items,
-    localStorageKey: 'picker-state',
-    defaultSettings: {
-        minBatchSize: 9,
-        maxBatchSize: 9,
+    var myPicker = new picker.Picker({
+        items: items,
+        localStorageKey: 'picker-state',
+        defaultSettings: {
+            minBatchSize: 9,
+            maxBatchSize: 9,
+        }
+    });
+
+    var pickerUI = new PickerUI(myPicker, {
+        elements: {
+            pick: "#pick",
+            pass: "#pass",
+            undo: "#undo",
+            redo: "#redo",
+            evaluating: "#evaluating",
+            favorites: "#favorites"
+        }
+    });
+
+    pickerUI.initialize();
+
+    /* Sortable favorites - you can safely remove this, and the Sortable.min.js script, if you don't want to be able to sort your favorite list. */
+    var sortable = new Sortable(pickerUI.elem.favorites.get(0), {
+        draggable: '.item',
+        animation: 100,
+        onStart: function() {
+            pickerUI.elem.favorites.addClass("sorting");
+        },
+        onEnd: function() {
+            pickerUI.elem.favorites.removeClass("sorting");
+        },
+        onUpdate: function() {
+            myPicker.setFavorites(pickerUI.elem.favorites.children().map(function() {
+                return pickerUI.getItem(this);
+            }).get());
+            pickerUI.update(true);
+        }
+    });
+    /* End sortable favorites */
+
+    function toggleMode() {
+        let buttonText = document.getElementById("darkmode-button");
+        var element = document.body;
+        if (buttonText.innerHTML === 'Dark mode') {
+        element.classList.add("dark-mode");
+        document.getElementById("darkmode-button").innerHTML = 'Light mode';
+        }
+        else
+        {
+        element.classList.remove("dark-mode");
+        document.getElementById("darkmode-button").innerHTML = 'Dark mode';
+        }
     }
-});
 
-var pickerUI = new PickerUI(myPicker, {
-    elements: {
-        pick: "#pick",
-        pass: "#pass",
-        undo: "#undo",
-        redo: "#redo",
-        evaluating: "#evaluating",
-        favorites: "#favorites"
+    const popup = document.getElementById('big-image-popup');
+    const popupImg = document.getElementById('popup-img');
+
+    function bigImage(name){
+        popupImg.src = "images/Fulls/" + name + " Full.png";
+        popup.style.display = 'block';
+        const x = event.pageX + 20; 
+        const y = event.pageY + 20;
+
+        popup.style.left = `${x}px`;
+        popup.style.top = `${y}px`;
     }
-});
 
-pickerUI.initialize();
-
-/* Sortable favorites - you can safely remove this, and the Sortable.min.js script, if you don't want to be able to sort your favorite list. */
-var sortable = new Sortable(pickerUI.elem.favorites.get(0), {
-    draggable: '.item',
-    animation: 100,
-    onStart: function() {
-        pickerUI.elem.favorites.addClass("sorting");
-    },
-    onEnd: function() {
-        pickerUI.elem.favorites.removeClass("sorting");
-    },
-    onUpdate: function() {
-        myPicker.setFavorites(pickerUI.elem.favorites.children().map(function() {
-            return pickerUI.getItem(this);
-        }).get());
-        pickerUI.update(true);
+    function hideBigImage(){
+        popup.style.display = 'none';
+        popupImg.src = '';
     }
-});
-/* End sortable favorites */
 
-function toggleMode() {
-    let buttonText = document.getElementById("darkmode-button");
-    var element = document.body;
-    if (buttonText.innerHTML === 'Dark mode') {
-      element.classList.add("dark-mode");
-      document.getElementById("darkmode-button").innerHTML = 'Light mode';
-    }
-    else
-    {
-      element.classList.remove("dark-mode");
-      document.getElementById("darkmode-button").innerHTML = 'Dark mode';
-    }
-}
-
-</script>
+    </script>
 </body>
 </html>
