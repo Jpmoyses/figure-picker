@@ -19,11 +19,11 @@ body {
 }
 
 ul{
-    width: 350px;
+    width: 424px;
 }
 
 ol{
-    width: 500px;
+    width: 560px;
 }
 
 a:link, a:visited {
@@ -215,6 +215,7 @@ button.disabled:hover {
 #overAll{
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     width: 100%;
 }
@@ -228,23 +229,20 @@ button.disabled:hover {
     max-width: 800px;
     display: flex;
     flex-direction: column;
-    align-self: flex-start;
+    align-self: center;
     align-items: center;
 }
 
 #big-image-popup {
-    display: none;
-    position: absolute;
-    z-index: 1000;
-    border: 2px solid #224466;
+    
+    border: 4px solid #224466;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    pointer-events: none; /* Prevents flickering if cursor touches it */
+    pointer-events: none;
 }
 
-/* Optional: restrict the preview size if the source image is too large */
+
 #big-image-popup img {
-    width: 500px;
-    height: auto;
+    width: 400px;
     display: block;
 }
 
@@ -366,27 +364,28 @@ body.dark-mode{
 </head>
 <body class="dark-mode">
     <button onClick='toggleMode()' id='darkmode-button'>Light mode</button>
-    <div id="big-image-popup">
-        <img id="popup-img" src="" alt="Larger view">
-    </div>
     <div id="overAll">
-        <h1>Super Figure Picker!!!!</h1>
-        <p>Wahoooooo!!!</p>
+        <h1>Favorite Figure Picker from Onyx's Collection!</h1>
     </div>
 
-    <div id="container">
-        <div id="picking">
-            <ul id="evaluating" class="item-list">
-            </ul>
+    <div id="overAll">
+        <div id="container">
+            <div id="picking">
+                <ul id="evaluating" class="item-list">
+                </ul>
 
-            <p id="buttons"><button id="pick">Pick</button> <button id="pass">Pass</button> <button id="undo">Undo</button> <button id="redo">Redo</button></p>
+                <p id="buttons"><button id="pick">Pick</button> <button id="pass">Pass</button> <button id="undo">Undo</button> <button id="redo">Redo</button></p>
+            </div>
+
+            <div id="big-image-popup">
+                <img id="popup-img" src="" alt="Larger view">
+            </div>
         </div>
-
         <div id="secondary">
-            <h2>Found favorites</h2>
+                <h2>Found favorites</h2>
 
-            <ol id="favorites" class="item-list">
-            </ol>
+                <ol id="favorites" class="item-list">
+                </ol>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
@@ -573,7 +572,7 @@ body.dark-mode{
         {id: 'Special Stories Hanamar', name: 'Special Stories Hanamar', image: "images/Icons/Special Stories Hanamar Icon.png"},
         {id: 'Spencer Eriri', name: 'Spencer Eriri', image: "images/Icons/Spencer Eriri Icon.png"},
         {id: 'Stark', name: 'Stark', image: "images/Icons/Stark Icon.png"},
-        {id: 'Sunny Day Song Hanyo', name: 'Sunny Day Song Hanyo', image: "images/Icons/Sunny Day Song Hanyo Icon.png"},
+        {id: 'Sunny Day Song Hanayo', name: 'Sunny Day Song Hanayo', image: "images/Icons/Sunny Day Song Hanayo Icon.png"},
         {id: 'Symphony Miku', name: 'Symphony Miku', image: "images/Icons/Symphony Miku Icon.png"},
         {id: 'Temptation Luka', name: 'Temptation Luka', image: "images/Icons/Temptation Luka Icon.png"},
         {id: 'Theresa Apocalypse', name: 'Theresa Apocalypse', image: "images/Icons/Theresa Apocalypse Icon.png"},
@@ -603,8 +602,8 @@ body.dark-mode{
         items: items,
         localStorageKey: 'picker-state',
         defaultSettings: {
-            minBatchSize: 3,
-            maxBatchSize: 9,
+            minBatchSize: 2,
+            maxBatchSize: 16,
         }
     });
 

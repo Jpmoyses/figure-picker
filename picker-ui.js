@@ -471,7 +471,8 @@
             return $(this.options.getItemElem(item, settings)).addClass('item').data('item', item.id);
         }
         if (item.image || this.options.getItemImageUrl) {
-            itemContent = $('<img src="' + (this.options.getItemImageUrl ? this.options.getItemImageUrl(item, settings) : item.image) + '" alt="' + itemName + '" title="' + itemName + '" onmouseover="bigImage(\'' + itemName.replace(/'/g, "\\'") + '\')" onmouseout="hideBigImage()">');
+            itemContent = $('<img src="' + (this.options.getItemImageUrl ? this.options.getItemImageUrl(item, settings) : item.image) + '" alt="' + itemName + '" title="' + itemName + '" onmouseover="bigImage(\'' + itemName.replace(/'/g, "\\'") + '\')">');
+
 
 
         }
